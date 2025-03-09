@@ -46,7 +46,7 @@ flights_km.show(5)
 
 
 
-# Categorize and  Sting indexer
+## Categorize and  Sting indexer
 
 from pyspark.ml.feature import StringIndexer
 
@@ -65,7 +65,7 @@ flights_indexed.show(5)
 
 
 
-# Vector Assembler
+## Vector Assembler
 
 from pyspark.ml.feature import VectorAssembler
 
@@ -89,3 +89,19 @@ flights_train, flights_test = flights.randomSplit([0.8, 0.2], seed=43)
 # Check that training set has around 80% of records
 training_ratio = flights_train.count() / flights.count()
 print(training_ratio)
+
+
+
+
+## Decision Tree Classifier
+
+# Import the Decision Tree Classifier class
+from pyspark.ml.classification import DecisionTreeClassifier
+
+# Create a classifier object and fit to the training data
+tree = DecisionTreeClassifier()
+tree_model = tree.fit(flights_train)
+
+# Create predictions for the testing data and take a look at the predictions
+prediction = tree_model.transform(flights_test)
+prediction.select('label', 'prediction', 'probability').show(5, False)

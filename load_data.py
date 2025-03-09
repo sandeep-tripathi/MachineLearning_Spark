@@ -46,7 +46,7 @@ flights_km.show(5)
 
 
 
-# Feature vector and Sting indexer
+# Categorize and  Sting indexer
 
 from pyspark.ml.feature import StringIndexer
 

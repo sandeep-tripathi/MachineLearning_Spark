@@ -30,7 +30,7 @@ print(flights_none_missing.count())
 
 
 ## Column Manipulation
-# Import the required function
+
 from pyspark.sql.functions import round
 
 # Convert 'mile' to 'km' and drop 'mile' column (1 mile is equivalent to 1.60934 km)
@@ -62,3 +62,20 @@ flights_indexed = indexer_model.transform(flights)
 # Repeat the process for the other categorical feature
 flights_indexed = StringIndexer(inputCol='org', outputCol='org_idx').fit(flights_indexed).transform(flights_indexed)
 flights_indexed.show(5)
+
+
+
+# Vector Assembler
+
+from pyspark.ml.feature import VectorAssembler
+
+# Create an assembler object
+assembler = VectorAssembler(inputCols=[
+    'mon', 'dom', 'dow', 'carrier_idx', 'org_idx', 'km', 'depart', 'duration'
+], outputCol='features')
+
+# Consolidate predictor columns
+flights_assembled = assembler.transform(flights)
+
+# Check the resulting column
+flights_assembled.select('features', 'delay').show(5, truncate=False)
